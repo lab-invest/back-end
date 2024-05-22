@@ -7,7 +7,8 @@ class User(BaseModel):
     email: str
     senha: str
     experiencia: str
-    carteiras: object={}
+    saldo: float=10000
+    carteiras: object={"geral": {}}
 
     @validator('experiencia')
     def validata_knowledge(cls, value: str) -> str:

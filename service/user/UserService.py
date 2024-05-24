@@ -17,7 +17,13 @@ class UserService:
         if existing_user:
             raise BadRequestException("Usuário já cadastrado")        
         self.__user_repo.insert_user(user.dict())
-        return "Usuario cadastrado"
+        return user.dict()
+    
+    def get_user(self, cpf):
+        existing_user = self.__user_repo.find_user_by_cpf(cpf)
+        if not existing_user:
+            raise NotFoundException("Usuário não encontrado")
+        return existing_user;
 
     def update_user_field(self, cpf, field_name, new_value):
         valid_fields = ["cpf", "nome", "email", "senha", "experiencia", "carteiras"]

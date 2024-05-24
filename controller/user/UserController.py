@@ -13,5 +13,9 @@ class UserController:
         return cls.__service.update_user_field(cpf, field_name, new_value)
 
     @classmethod
-    def delete_user(cls, cpf: int):
+    def delete_user(cls, cpf: str):
         return cls.__service.delete_user(cpf)
+    
+    @classmethod
+    def get_user(cls, cpf: str):
+        return cls.__service.get_user(cpf)

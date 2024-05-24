@@ -14,7 +14,7 @@ class UserRepo():
         return user
 
     def find_user_by_cpf(self, cpf):
-        user = self.collection.find_one({"cpf": cpf})
+        user = self.collection.find_one({"cpf": cpf}, {"_id": 0})
         return user
 
     def update_user_field(self, cpf, field_name, new_value):

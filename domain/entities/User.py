@@ -2,7 +2,7 @@ from pydantic import BaseModel, validator
 from domain.enum.KnowledgeType import KnowledgeType
 
 class User(BaseModel):
-    cpf: int
+    cpf: str
     nome: str
     email: str
     senha: str

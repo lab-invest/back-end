@@ -7,8 +7,10 @@ class User(BaseModel):
     email: str
     senha: str
     experiencia: str
+    data_nascimento: str
     saldo: float=10000
     carteiras: object={"geral": {}}
+    img_perfil: str="foto de perfil"
 
     @validator('experiencia')
     def validata_knowledge(cls, value: str) -> str:

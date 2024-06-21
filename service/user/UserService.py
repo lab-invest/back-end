@@ -1,6 +1,7 @@
 from domain.entities.User import User
 from domain.entities.Stock import Stock
 from repository.users.UsersRepository import UserRepo
+from repository.users.MovimentationRepository import MovimentationRepo
 from controller.exceptions.BadRequestException import BadRequestException
 from controller.exceptions.NotFoundException import NotFoundException
 from uuid import uuid4
@@ -8,6 +9,7 @@ from uuid import uuid4
 class UserService:
     def __init__(self):
         self.__user_repo = UserRepo()
+        self.__movimentation_repo = MovimentationRepo()
 
     def register_user(self, user_data):
         try:
@@ -56,6 +58,8 @@ class UserService:
 
         ##TODO: Saldos
         ##TODO: Carteiras
+        ##TODO: Validar ação em Ativos
+
         try:
             stock = Stock(**acao.dict())
         except BadRequestException as e:
@@ -74,7 +78,7 @@ class UserService:
         
         self.__user_repo.update_balance(email, price)
 
-        self.__user_repo.save_order(email, stock, "Compra", id_operation)
+        self.__movimentation_repo.save_order(email, stock, "Compra", id_operation)
         
         
 

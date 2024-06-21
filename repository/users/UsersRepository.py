@@ -7,7 +7,6 @@ class UserRepo():
         self.client = MongoDBConnector.get_client()
         self.db = self.client["InvestLab"]
         self.collection = self.db["Usuarios"]
-        self.movimentation = self.db["Movimentações"]
 
 
     def insert_user(self, user_data):
@@ -76,9 +75,4 @@ class UserRepo():
         nova_compra: float = stock.preco_medio * stock.quantidade
         preco: float = (valor_atual + nova_compra) / quantidade
         return preco
-    
-    def save_order(self, email: str, stock: Stock, operation: str, id_operation: str):
-        self.movimentation.insert_one({"id_operacao": id_operation, "usuario": email, "ticker": stock.nome, "quantidade": stock.quantidade, "preco": stock.preco_medio, "tipo_operacao": operation})
-
-
     

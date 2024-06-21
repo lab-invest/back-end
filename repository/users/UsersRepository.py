@@ -50,6 +50,23 @@ class UserRepo():
             {"$set": {"carteiras.geral." + acao.nome: {"preco_medio": acao.preco_medio, "quantidade": acao.quantidade}}},
             upsert=True
         )
+    
+    def insert_new_ticker_in_specific_wallet(self, email, acao: Stock, wallet):
+        self.collection.update_one(
+            {"email": email},
+            {"$set": {"carteiras." + wallet + "." + acao.nome: {"preco_medio": acao.preco_medio, "quantidade": acao.quantidade}}},
+            upsert=True
+        )
+
+    def update_exists_ticker_in_specific_wallet(self, email: str, acao: Stock, preco_medio: float, wallet):
+        self.collection.update_one(
+            {"email": email, "carteiras." + wallet + "." + acao.nome: {"$exists": True}},
+            {
+                "$inc": {"carteiras." + wallet + "." + acao.nome + ".quantidade": acao.quantidade},
+                "$set": {"carteiras." + wallet + "." + acao.nome + ".preco_medio": preco_medio}
+            },
+            upsert=True
+        )
 
     def update_exists_ticker_wallet(self, email: str, acao: Stock, preco_medio: float):
         self.collection.update_one(

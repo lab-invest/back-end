@@ -61,7 +61,7 @@ class UserService:
         ##TODO: Validar ação em Ativos
 
         try:
-            stock = Stock(**acao.dict())
+            stock = Stock(**acao.dict()) ## stock = Stock(**acao.model_dump())
         except BadRequestException as e:
             raise e("Request Body inválido")
         
@@ -69,7 +69,6 @@ class UserService:
         self.__user_repo.validate_valid_balance(email, price)
         verify_existing_stock = self.__user_repo.verify_existing_stock(email, stock.nome)
         id_operation = str(uuid4())
-
         if verify_existing_stock > 0:
             new_price = self.__user_repo.calculate_new_average_price(email, stock)
             self.__user_repo.update_exists_ticker_wallet(email, stock, new_price)

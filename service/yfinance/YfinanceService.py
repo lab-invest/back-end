@@ -17,8 +17,4 @@ class YfinanceService:
     def sell_stock(cls, ticker:str, quantity: int) -> None:
         return
     
-    @classmethod
-    def verify_balance(cls, balance: float, price: float) -> None:
-        if balance < price:
-            raise BadRequestException("Saldo insuficiente")
     

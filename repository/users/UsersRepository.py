@@ -7,24 +7,30 @@ class UserRepo():
         self.client = MongoDBConnector.get_client()
         self.db = self.client["InvestLab"]
         self.collection = self.db["Usuarios"]
+        self.movimentation = self.db["Movimentações"]
 
 
     def insert_user(self, user_data):
         self.collection.insert_one(user_data)
 
     def find_user_by_email(self, email: str):
-        user = self.collection.find_one({"email": email})
+        user = self.collection.find_one({"email": email}, {"_id": 0})
         return user
 
     def find_user_by_cpf(self, cpf: str):
         user = self.collection.find_one({"cpf": cpf}, {"_id": 0})
         return user
 
-    def update_user_field(self, email: str, field_name: str, new_value: str):
+    def update_user_field(self, email: str, field_name: str, new_value: str | float):
         self.collection.update_one({"email": email}, {"$set": {field_name: new_value}})
 
     def delete_user_by_email(self, email: str):
         self.collection.delete_one({"email": email})
+
+    def update_balance(self, email: str, price: float):
+        saldo: float = self.find_user_by_email(email)["saldo"]
+        new_price: float = saldo - price
+        self.update_user_field(email, "saldo", new_price)
     
     def find_user_balance(self, email: str):
         user_balance = self.collection.find_one({"email": email}, {"saldo": 1, "_id": 0})["saldo"]
@@ -45,6 +51,7 @@ class UserRepo():
             {"$set": {"carteiras.geral." + acao.nome: {"preco_medio": acao.preco_medio, "quantidade": acao.quantidade}}},
             upsert=True
         )
+
     def update_exists_ticker_wallet(self, email: str, acao: Stock, preco_medio: float):
         self.collection.update_one(
             {"email": email, "carteiras.geral." + acao.nome: {"$exists": True}},
@@ -61,13 +68,17 @@ class UserRepo():
             {"email": email, "carteiras.geral." + ticker: {"$exists": True}}
         )
     
-    def calculate_new_average_price(cls, email: str, stock: Stock) -> float:
+    def calculate_new_average_price(self, email: str, stock: Stock) -> float:
         ticker: str = stock.nome
-        dado_existente: dict = cls.get_average_price(email, ticker)
+        dado_existente: dict = self.get_average_price(email, ticker)
         quantidade = dado_existente["quantidade"] + stock.quantidade
         valor_atual: float = dado_existente["preco_medio"] * dado_existente["quantidade"]
         nova_compra: float = stock.preco_medio * stock.quantidade
         preco: float = (valor_atual + nova_compra) / quantidade
         return preco
+    
+    def save_order(self, email: str, stock: Stock, operation: str, id_operation: str):
+        self.movimentation.insert_one({"id_operacao": id_operation, "usuario": email, "ticker": stock.nome, "quantidade": stock.quantidade, "preco": stock.preco_medio, "tipo_operacao": operation})
+
 
     

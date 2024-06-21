@@ -3,6 +3,7 @@ from domain.entities.Stock import Stock
 from repository.users.UsersRepository import UserRepo
 from controller.exceptions.BadRequestException import BadRequestException
 from controller.exceptions.NotFoundException import NotFoundException
+from uuid import uuid4
 
 class UserService:
     def __init__(self):
@@ -51,9 +52,10 @@ class UserService:
         self.__user_repo.delete_user_by_email(email)
 
     def buy_stock(self, email: str, acao: Stock):
-        ##TODO: Colocar em Movimentações
-        ##TODO: Validar em Ativos
-        ##TODO: Tirar do salto
+
+
+        ##TODO: Saldos
+        ##TODO: Carteiras
         try:
             stock = Stock(**acao.dict())
         except BadRequestException as e:
@@ -61,8 +63,8 @@ class UserService:
         
         price = stock.preco_medio * stock.quantidade
         self.__user_repo.validate_valid_balance(email, price)
-
         verify_existing_stock = self.__user_repo.verify_existing_stock(email, stock.nome)
+        id_operation = str(uuid4())
 
         if verify_existing_stock > 0:
             new_price = self.__user_repo.calculate_new_average_price(email, stock)
@@ -70,6 +72,16 @@ class UserService:
         else:
             self.__user_repo.insert_new_ticker_wallet(email, stock)
         
+        self.__user_repo.update_balance(email, price)
+
+        self.__user_repo.save_order(email, stock, "Compra", id_operation)
+        
         
 
-        
+    ##TODO: Sell Stock
+
+    ##TODO: Serviço WebSocket
+
+    ##TODO: Rota para tela de ações - Gráficos
+
+    ##TODO: Gráficos para usuário

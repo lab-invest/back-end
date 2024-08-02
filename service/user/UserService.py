@@ -53,8 +53,7 @@ class UserService:
             raise NotFoundException("Usuario não encontrado")
         self.__user_repo.delete_user_by_email(email)
 
-    def buy_stock(self, email: str, acao: Stock):
-
+    def buy_stock(self, email: str, acao: Stock, wallet: str):
 
         ##TODO: Saldos
         ##TODO: Carteiras
@@ -72,6 +71,8 @@ class UserService:
         if verify_existing_stock > 0:
             new_price = self.__user_repo.calculate_new_average_price(email, stock)
             self.__user_repo.update_exists_ticker_wallet(email, stock, new_price)
+            if wallet is not None:
+                self.__user_repo.
         else:
             self.__user_repo.insert_new_ticker_wallet(email, stock)
         

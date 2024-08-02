@@ -50,7 +50,7 @@ class UserRepo():
             {"$set": {"carteiras.geral." + acao.nome: {"preco_medio": acao.preco_medio, "quantidade": acao.quantidade}}},
             upsert=True
         )
-    
+
     def insert_new_ticker_in_specific_wallet(self, email, acao: Stock, wallet):
         self.collection.update_one(
             {"email": email},

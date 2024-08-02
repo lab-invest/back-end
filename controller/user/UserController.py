@@ -26,5 +26,5 @@ class UserController:
         return cls.__service.get_balance(email)
     
     @classmethod
-    def buy_stock(cls, email: str, stock: Stock):
-        return cls.__service.buy_stock(email, stock)
+    def buy_stock(cls, email: str, stock: Stock, wallet: str):
+        return cls.__service.buy_stock(email, stock, wallet)

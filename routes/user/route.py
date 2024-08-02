@@ -27,5 +27,5 @@ async def get_balance(email: str):
     return UserController.get_balance(email)
 
 @app.patch("/stock/buy", tags=["stocks"])
-async def buy_stock(email: str, stock: Stock):
-    return UserController.buy_stock(email, stock)
+async def buy_stock(email: str, stock: Stock, wallet: str=None):
+    return UserController.buy_stock(email, stock, wallet)

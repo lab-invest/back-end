@@ -10,5 +10,5 @@ async def get_actual_cotation(ticker: str):
     return StockController.get_cotation(ticker)
 
 @app.get("/stockList/", tags=["stock"])
-async def get_cotation_list(tickers: list):
-    return StockController.get_cotation_list(tickers)
+async def get_cotation_list():
+    return StockController.get_cotation_list()

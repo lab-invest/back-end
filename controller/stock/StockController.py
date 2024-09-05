@@ -9,5 +9,5 @@ class StockController:
 
     
     @classmethod
-    def get_cotation_list(cls, tickers: list):
-        return cls.__service.cotationList(tickers)
+    def get_cotation_list(cls):
+        return cls.__service.cotationList()

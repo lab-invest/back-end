@@ -3,6 +3,8 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from service.router.service import RouterService
 
+
+import routes.stocks.route
 router = RouterService.get_router()
 app = FastAPI(title="InvestLab")
 

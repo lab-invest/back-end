@@ -1,10 +1,8 @@
 import uvicorn
-from fastapi import FastAPI, Request
-from fastapi.responses import UJSONResponse
+from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from service.router.service import RouterService
 
-import routes.user.route
 router = RouterService.get_router()
 app = FastAPI(title="InvestLab")
 

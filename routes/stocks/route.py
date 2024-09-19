@@ -12,3 +12,15 @@ async def get_actual_cotation(ticker: str):
 @app.get("/stockList/", tags=["stock"])
 async def get_cotation_list():
     return StockController.get_cotation_list()
+
+@app.get("/stock/prevision", tags=["stock"])
+async def get_stock_prevision(ticker: str):
+    return StockController.get_stock_prevision(ticker)
+
+@app.get("/stock/marketplace", tags=["stock"])
+async def get_stock_marketplace(ticker: str):
+    return StockController.get_stock_marketplace(ticker)
+
+@app.get("/stock/stockPage", tags=["stock"])
+async def get_stock_page(ticker: str):
+    return StockController.get_stock_page()

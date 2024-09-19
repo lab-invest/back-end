@@ -7,3 +7,4 @@ class StockMarketplace(BaseModel):
     rentability: float
     historic_values: str
     stock_cotation: float
+    img: str

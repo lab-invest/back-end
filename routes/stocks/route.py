@@ -22,5 +22,5 @@ async def get_stock_marketplace(ticker: str):
     return StockController.get_stock_marketplace(ticker)
 
 @app.get("/stock/stockPage", tags=["stock"])
-async def get_stock_page(ticker: str):
+async def get_stock_page():
     return StockController.get_stock_page()

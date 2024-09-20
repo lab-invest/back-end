@@ -1,8 +1,7 @@
-from http.client import HTTPException
-from typing import Dict, List
 from yahoo_fin.stock_info import get_live_price
-from datetime import datetime
+from datetime import datetime, timedelta
 from dateutil.relativedelta import relativedelta
+from datetime import datetime
 import yfinance as yf
 from repository.StockRepository import StockRepo
 from domain.entities.Prevision import PrevisionResponse
@@ -47,26 +46,29 @@ class StockService:
         date = (datetime.now() - relativedelta(years=1)).strftime("%Y-%m-%d")
         data = yf.download(ticker, start=date)
         return data
-    
+
     def get_actual_day(self, ticker: str):
         date = datetime.now().strftime("%Y-%m-%d")
+        data = yf.download(ticker, start=date, interval= "1m")
+        return data
+    
+    def get_yesterday(self, ticker: str):
+        date = (datetime.now() - timedelta(1)).strftime("%Y-%m-%d")
         data = yf.download(ticker, start=date, interval= "1m")
         return data
 
     def calculate_rentability(self, data):
         first_data = data.head(1)['Close'].iloc[-1]
         last_data = data.tail(1)['Close'].iloc[-1]
-        print("fist: ", first_data)
-        print("last   ", last_data)
         rentabilidade = ((last_data - first_data) / first_data) * 100
         return rentabilidade
     
     def get_stock_info(self, ticker, info):
-        return float(self.get_actual_day(ticker).tail(2)[info].iloc[0])
+        return float(self.get_yesterday(ticker).tail(2)[info].iloc[0])
 
 
     def stock_marketplace(self, ticker: str):
-        historical_data_json = self.get_actual_day(ticker)['Close']
+        historical_data_json = self.get_yesterday(ticker)['Close']
         stock_cotation = self.cotation(ticker)
         rentability = self.calculate_rentability(self.get_previous_year(ticker))
         img = self.get_image(ticker)

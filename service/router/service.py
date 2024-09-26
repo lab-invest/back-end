@@ -1,6 +1,5 @@
 from fastapi import APIRouter
 
-
 class RouterService:
 
     __router = None

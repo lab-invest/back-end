@@ -1,11 +1,7 @@
 import pymongo
-# Project
 class MongoDBConnector:
 
     __client = None
-    __user = "investlab"
-    __password = "investlab123"
-    __url = "investlab.gphsjai.mongodb.net"
 
     @classmethod
     def get_client(cls):

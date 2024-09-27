@@ -22,7 +22,7 @@ class StockService:
         return self.__user_repo.get_image(ticker.split(".SA")[0])['logo']
     
     def cotationList(self):
-        resultList = [self.cotation("VALE3.SA"), self.cotation("TRPL4.SA"), self.cotation("TAEE3.SA"), self.cotation("NEOE3.SA"), self.cotation("PETR4.SA"), self.cotation("TOTS3.SA"), self.cotation("GOAU4.SA"), self.cotation("KLBN4.SA")]
+        resultList = [self.calculate_rentability(self.get_yesterday('VALE3.SA')), self.calculate_rentability(self.get_yesterday("TRPL4.SA")), self.calculate_rentability(self.get_yesterday("TAEE3.SA")), self.calculate_rentability(self.get_yesterday("NEOE3.SA")), self.calculate_rentability(self.get_yesterday("PETR4.SA")), self.calculate_rentability(self.get_yesterday("TOTS3.SA")), self.calculate_rentability(self.get_yesterday("GOAU4.SA")), self.calculate_rentability(self.get_yesterday("KLBN4.SA"))]
         return resultList
     
     def stock_prevision(self, ticker:str):

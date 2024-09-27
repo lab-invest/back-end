@@ -23,3 +23,7 @@ class StockController:
     @classmethod
     def get_stock_page(cls):
         return cls.__service.stock_page()
+    
+    @classmethod
+    def get_image(cls, ticker:str):
+        return cls.__service.get_image(ticker)

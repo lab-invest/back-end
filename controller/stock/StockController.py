@@ -1,4 +1,5 @@
 from service.stock.StockService import StockService
+from typing import List
 
 class StockController:
     __service = StockService()
@@ -27,3 +28,11 @@ class StockController:
     @classmethod
     def get_image(cls, ticker:str):
         return cls.__service.get_image(ticker)
+
+    @classmethod
+    def stockComparison(cls, stockList: List[str]):
+        return cls.__service.stockComparison(stockList)
+    
+    @classmethod
+    def stockComparisonAside(cls, stockList: List[dict]):
+        return cls.__service.stockComparisonAside(stockList)

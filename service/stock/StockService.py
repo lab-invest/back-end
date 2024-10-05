@@ -3,10 +3,13 @@ from datetime import datetime, timedelta
 from dateutil.relativedelta import relativedelta
 from datetime import datetime
 import yfinance as yf
+from domain.entities.StockComparisonAside import StockComparisonAside
+from domain.entities.StockComparison import StockComparison
 from repository.StockRepository import StockRepo
 from domain.entities.Prevision import PrevisionResponse
 from domain.entities.StockMarketplace import StockMarketplace
 from domain.entities.StockPage import StockPage, StockData, AdditionalData
+from typing import List
 
 
 class StockService:
@@ -95,6 +98,7 @@ class StockService:
             ibov_points= ibov_points,
             ibov_rent= ibov_rent,
             additional_data=AdditionalData(
+                ##REFACTOR
                 items=[
                     StockData(nome="VALE3.SA", rentabilidade=self.calculate_rentability(self.get_previous_year('VALE3.SA')), imagem= self.get_image("VALE3.SA"), max= self.get_stock_info("VALE3.SA", "High"), minimo= self.get_stock_info("VALE3.SA", "Low"), volume= self.get_stock_info("VALE3.SA", "Volume"), abertura= self.get_stock_info("VALE3.SA", "Open"), fechamento= self.get_stock_info("VALE3.SA", "Close"), preco_atual= self.cotation("VALE3.SA")),
                     StockData(nome="TRPL4.SA", rentabilidade=self.calculate_rentability(self.get_previous_year('TRPL4.SA')), imagem= self.get_image("TRPL4.SA"), max= self.get_stock_info("TRPL4.SA", "High"), minimo= self.get_stock_info("TRPL4.SA", "Low"), volume= self.get_stock_info("TRPL4.SA", "Volume"), abertura= self.get_stock_info("TRPL4.SA", "Open"), fechamento= self.get_stock_info("TRPL4.SA", "Close"), preco_atual= self.cotation("TRPL4.SA")),
@@ -108,5 +112,48 @@ class StockService:
             )
         )
         return stock_page
+    
+    def stockComparison(self, stockList: List[str]):
+        result = StockComparison(stocks= [])
 
+        for i in stockList:
+            stock = self.get_previous_year(i)['Close'].to_dict()
+            result.stocks.append({i: stock})
+        return result
+    
+    def stockComparisonAside(self, stockList: List[dict]):
+        result = StockComparisonAside(stocks=[], walletRent=0.0, totalWallet=0.0)
+        result.stocks.append(self.getStockInfoForAside(stockList))
+        result.walletRent = self.getWalletRent(stockList)
+        result.totalWallet = self.getTotalWalletAmount(stockList)
+        return result
+
+    def getStockInfoForAside(self, stockList: List[dict]):
+        result = []
+        for i in stockList:
+            stockValue = self.cotation(i['ticker'])
+            stockRent = self.calculate_rentability(self.get_previous_year(i['ticker']))
+            stockImg = self.get_image(i['ticker'])
+            result.append({i['ticker']: [stockValue, stockRent, stockImg]})
+        return result
+    
+    def getTotalWalletAmount(self, stockList: List[dict]):
+        totalAmountWallet = 0
+        for i in stockList:
+            stockValue = self.cotation(i['ticker'])
+            positionValue = i['quantity'] * stockValue
+            totalAmountWallet+=positionValue
+        return totalAmountWallet
+    
+    def getWalletRent(self, stockList: List[dict]):
+        totalRent = 0
+        totalAmountWallet = 0
+        for i in stockList:
+            stockValue = self.cotation(i['ticker'])
+            stockRent = self.calculate_rentability(self.get_previous_year(i['ticker']))
+            positionValue = i['quantity'] * stockValue
+            totalRent+=stockRent * positionValue
+            totalAmountWallet+=positionValue
+        result = totalRent/totalAmountWallet
+        return result
         

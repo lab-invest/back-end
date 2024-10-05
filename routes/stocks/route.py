@@ -1,7 +1,8 @@
 from controller.stock.StockController import StockController
 from service.router.service import RouterService
-
-
+from typing import List, Dict
+import json
+from fastapi import Query, Body
 app = RouterService.get_router()
 
 
@@ -28,3 +29,11 @@ async def get_stock_page():
 @app.get("/stock/image", tags=["stock"])
 async def get_image(ticker: str):
     return StockController.get_image(ticker)
+
+@app.get("/stock/comparison", tags=["stock"])
+async def get_stock_comparison(tickerList: List[str] = Query(...)):
+    return StockController.stockComparison(tickerList)
+
+@app.post("/stock/comparisonAside", tags=["stock"])
+async def get_stock_comparison_aside(tickerList:List[dict] = Body(...)):
+    return StockController.stockComparisonAside(tickerList)

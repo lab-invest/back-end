@@ -16,6 +16,7 @@ class StockService:
 
     def __init__(self):
         self.__user_repo = StockRepo()
+        self.stock_page_data = ["VALE3.SA", "TRPL4.SA", "TAEE3.SA", "NEOE3.SA", "PETR4.SA", "TOTS3.SA", "GOAU4.SA", "KLBN3.SA"]
     
     def cotation(self, ticker:str):
         price = get_live_price(ticker)
@@ -92,24 +93,15 @@ class StockService:
         return marketplace_data
     
     def stock_page(self):
+        additional_data_obj = AdditionalData(items=[])
         ibov_points = self.cotation('^BVSP')
         ibov_rent = self.calculate_rentability(self.get_previous_year('^BVSP'))
+        for i in self.stock_page_data:
+            additional_data_obj.items.append(StockData(nome=i, rentabilidade=self.calculate_rentability(self.get_previous_year(i)), imagem= self.get_image(i), max= self.get_stock_info(i, "High"), minimo= self.get_stock_info(i, "Low"), volume= self.get_stock_info(i, "Volume"), abertura= self.get_stock_info(i, "Open"), fechamento= self.get_stock_info(i, "Close"), preco_atual= self.cotation(i)))
         stock_page = StockPage(
             ibov_points= ibov_points,
             ibov_rent= ibov_rent,
-            additional_data=AdditionalData(
-                ##REFACTOR
-                items=[
-                    StockData(nome="VALE3.SA", rentabilidade=self.calculate_rentability(self.get_previous_year('VALE3.SA')), imagem= self.get_image("VALE3.SA"), max= self.get_stock_info("VALE3.SA", "High"), minimo= self.get_stock_info("VALE3.SA", "Low"), volume= self.get_stock_info("VALE3.SA", "Volume"), abertura= self.get_stock_info("VALE3.SA", "Open"), fechamento= self.get_stock_info("VALE3.SA", "Close"), preco_atual= self.cotation("VALE3.SA")),
-                    StockData(nome="TRPL4.SA", rentabilidade=self.calculate_rentability(self.get_previous_year('TRPL4.SA')), imagem= self.get_image("TRPL4.SA"), max= self.get_stock_info("TRPL4.SA", "High"), minimo= self.get_stock_info("TRPL4.SA", "Low"), volume= self.get_stock_info("TRPL4.SA", "Volume"), abertura= self.get_stock_info("TRPL4.SA", "Open"), fechamento= self.get_stock_info("TRPL4.SA", "Close"), preco_atual= self.cotation("TRPL4.SA")),
-                    StockData(nome="TAEE3.SA", rentabilidade=self.calculate_rentability(self.get_previous_year('TAEE3.SA')), imagem= self.get_image("TAEE3.SA"), max= self.get_stock_info("TAEE3.SA", "High"), minimo= self.get_stock_info("TAEE3.SA", "Low"), volume= self.get_stock_info("TAEE3.SA", "Volume"), abertura= self.get_stock_info("TAEE3.SA", "Open"), fechamento= self.get_stock_info("TAEE3.SA", "Close"), preco_atual= self.cotation("TAEE3.SA")),
-                    StockData(nome="NEOE3.SA", rentabilidade=self.calculate_rentability(self.get_previous_year('NEOE3.SA')), imagem= self.get_image("NEOE3.SA"), max= self.get_stock_info("NEOE3.SA", "High"), minimo= self.get_stock_info("NEOE3.SA", "Low"), volume= self.get_stock_info("NEOE3.SA", "Volume"), abertura= self.get_stock_info("NEOE3.SA", "Open"), fechamento= self.get_stock_info("NEOE3.SA", "Close"), preco_atual= self.cotation("NEOE3.SA")),
-                    StockData(nome="PETR4.SA", rentabilidade=self.calculate_rentability(self.get_previous_year('PETR4.SA')), imagem= self.get_image("PETR4.SA"), max= self.get_stock_info("PETR4.SA", "High"), minimo= self.get_stock_info("PETR4.SA", "Low"), volume= self.get_stock_info("PETR4.SA", "Volume"), abertura= self.get_stock_info("PETR4.SA", "Open"), fechamento= self.get_stock_info("PETR4.SA", "Close"), preco_atual= self.cotation("PETR4.SA")),
-                    StockData(nome="TOTS3.SA", rentabilidade=self.calculate_rentability(self.get_previous_year('TOTS3.SA')), imagem= self.get_image("TOTS3.SA"), max= self.get_stock_info("TOTS3.SA", "High"), minimo= self.get_stock_info("TOTS3.SA", "Low"), volume= self.get_stock_info("TOTS3.SA", "Volume"), abertura= self.get_stock_info("TOTS3.SA", "Open"), fechamento= self.get_stock_info("TOTS3.SA", "Close"), preco_atual= self.cotation("TOTS3.SA")),
-                    StockData(nome="GOAU4.SA", rentabilidade=self.calculate_rentability(self.get_previous_year('GOAU4.SA')), imagem= self.get_image("GOAU4.SA"), max= self.get_stock_info("GOAU4.SA", "High"), minimo= self.get_stock_info("GOAU4.SA", "Low"), volume= self.get_stock_info("GOAU4.SA", "Volume"), abertura= self.get_stock_info("GOAU4.SA", "Open"), fechamento= self.get_stock_info("GOAU4.SA", "Close"), preco_atual= self.cotation("GOAU4.SA")),
-                    StockData(nome="KLBN3.SA", rentabilidade=self.calculate_rentability(self.get_previous_year('KLBN3.SA')), imagem= self.get_image("KLBN3.SA"), max= self.get_stock_info("KLBN3.SA", "High"), minimo= self.get_stock_info("KLBN3.SA", "Low"), volume= self.get_stock_info("KLBN3.SA", "Volume"), abertura= self.get_stock_info("KLBN3.SA", "Open"), fechamento= self.get_stock_info("KLBN3.SA", "Close"), preco_atual= self.cotation("KLBN3.SA")),
-                ]
-            )
+            additional_data = additional_data_obj
         )
         return stock_page
     

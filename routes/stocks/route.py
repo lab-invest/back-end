@@ -1,4 +1,5 @@
 from controller.stock.StockController import StockController
+from domain.entities.WalletObject import WalletList, WalletsRequest
 from service.router.service import RouterService
 from typing import List, Dict
 import json
@@ -37,3 +38,7 @@ async def get_stock_comparison(tickerList: List[str] = Query(...)):
 @app.post("/stock/comparisonAside", tags=["stock"])
 async def get_stock_comparison_aside(tickerList:List[dict] = Body(...)):
     return StockController.stockComparisonAside(tickerList)
+
+@app.post("/wallet/comparison", tags=["wallet"])
+async def get_wallet_comparison(walletList: WalletsRequest):
+    return StockController.walletComparison(walletList)

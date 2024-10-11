@@ -1,5 +1,6 @@
+from domain.entities.WalletObject import WalletList, WalletsRequest
 from service.stock.StockService import StockService
-from typing import List
+from typing import Dict, List
 
 class StockController:
     __service = StockService()
@@ -36,3 +37,7 @@ class StockController:
     @classmethod
     def stockComparisonAside(cls, stockList: List[dict]):
         return cls.__service.stockComparisonAside(stockList)
+    
+    @classmethod
+    def walletComparison(cls, walletList: WalletsRequest):
+        return cls.__service.walletComparison(walletList)

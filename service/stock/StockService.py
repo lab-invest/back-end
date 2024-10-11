@@ -5,11 +5,12 @@ from datetime import datetime
 import yfinance as yf
 from domain.entities.StockComparisonAside import StockComparisonAside
 from domain.entities.StockComparison import StockComparison
+from domain.entities.WalletObject import WalletList, WalletsRequest
 from repository.StockRepository import StockRepo
 from domain.entities.Prevision import PrevisionResponse
 from domain.entities.StockMarketplace import StockMarketplace
 from domain.entities.StockPage import StockPage, StockData, AdditionalData
-from typing import List
+from typing import Dict, List
 
 
 class StockService:
@@ -149,3 +150,37 @@ class StockService:
         result = totalRent/totalAmountWallet
         return result
         
+    
+    def walletComparison(self, wallets_request: WalletsRequest):
+        results = []
+
+        for wallet in wallets_request.wallets:
+            wallet_value_history = {}
+            wallet_name = wallet.name
+
+            for stock in wallet.items:
+                ticker = stock.ticker
+                quantity = stock.quantity
+
+                historical_data = self.get_previous_year(ticker)
+
+                for date, row in historical_data.iterrows():
+                    close_price = row['Close']
+                    position_value = close_price * quantity
+
+                    if date not in wallet_value_history:
+                        wallet_value_history[date] = 0
+                    
+                    wallet_value_history[date] += position_value
+
+            wallet_history_list = [
+                {"date": date.strftime("%Y-%m-%d"), "value": value}
+                for date, value in sorted(wallet_value_history.items())
+            ]
+
+            results.append({
+                "wallet_name": wallet_name,
+                "history": wallet_history_list
+            })
+
+        return results

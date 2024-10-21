@@ -41,3 +41,7 @@ class StockController:
     @classmethod
     def walletComparison(cls, walletList: WalletsRequest):
         return cls.__service.walletComparison(walletList)
+    
+    @classmethod
+    def walletRent(cls, walletList: List[dict]):
+        return cls.__service.getWalletRent(walletList)

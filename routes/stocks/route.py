@@ -42,3 +42,7 @@ async def get_stock_comparison_aside(tickerList:List[dict] = Body(...)):
 @app.post("/wallet/comparison", tags=["wallet"])
 async def get_wallet_comparison(walletList: WalletsRequest):
     return StockController.walletComparison(walletList)
+
+@app.post("/wallet/rentability", tags=["wallet"])
+async def get_wallet_rent(walletList: List[dict]):
+    return StockController.walletRent(walletList)

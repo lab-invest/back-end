@@ -58,10 +58,15 @@ class StockService:
         return data
     
     def get_yesterday(self, ticker: str):
-        date = (datetime.now() - timedelta(1)).strftime("%Y-%m-%d")
-        data = yf.download(ticker, start=date, interval= "1m")
+        date = datetime.now() - timedelta(1)
+        
+        while date.weekday() >= 5: 
+            date -= timedelta(1)
+        
+        date_str = date.strftime("%Y-%m-%d")
+        data = yf.download(ticker, start=date_str, interval="1m")
         return data
-
+    
     def calculate_rentability(self, data):
         first_data = data.head(1)['Close'].iloc[-1]
         last_data = data.tail(1)['Close'].iloc[-1]
@@ -220,9 +225,8 @@ class StockService:
         return results
     
     def findStock(self, stockName: str):
-        # try:
-            # result = StockData(nome=stockName, rentabilidade=self.calculate_rentability(self.get_yesterday(stockName)), imagem= self.get_image(stockName), max= self.get_stock_info(stockName, "High"), minimo= self.get_stock_info(stockName, "Low"), volume= self.get_stock_info(stockName, "Volume"), abertura= self.get_stock_info(stockName, "Open"), fechamento= self.get_stock_info(stockName, "Close"), preco_atual= self.cotation(stockName))
-            result = self.get_yesterday(stockName)
+        try:
+            result = StockData(nome=stockName, rentabilidade=self.calculate_rentability(self.get_yesterday(stockName)), imagem= self.get_image(stockName), max= self.get_stock_info(stockName, "High"), minimo= self.get_stock_info(stockName, "Low"), volume= self.get_stock_info(stockName, "Volume"), abertura= self.get_stock_info(stockName, "Open"), fechamento= self.get_stock_info(stockName, "Close"), preco_atual= self.cotation(stockName))
             return result
-        # except Exception as e:
-        #     return f"Ação '{stockName}' não encontrada."
+        except Exception as e:
+            return f"Ação '{stockName}' não encontrada."

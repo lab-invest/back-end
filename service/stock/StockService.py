@@ -191,38 +191,41 @@ class StockService:
         return results
     
     def walletInfo(self, wallets_request: WalletsRequest):
-        results = []
+        wallets_response = {"wallets": []} 
 
         for wallet in wallets_request.wallets:
             wallet_name = wallet.name
-            totalRent = 0
-            totalAmountWallet = 0
-            itens = []
+            total_rent = 0
+            total_amount_wallet = 0
+            items_response = []
 
             for stock in wallet.items:
                 ticker = stock.ticker
                 quantity = stock.quantity
 
-                stockValue = self.cotation(ticker)
-                stockRent = self.calculate_rentability(self.get_previous_year(ticker))
-                positionValue = quantity * stockValue
-                totalRent+=stockRent * positionValue
-                totalAmountWallet+=positionValue
-                itens.append({
-                "stock_name": ticker,
-                "stock_img": self.get_image(ticker)
-            })
-            wallet_rent = totalRent/totalAmountWallet
-          
+                stock_value = self.cotation(ticker) 
+                stock_rent = self.calculate_rentability(self.get_previous_year(ticker))
+                position_value = quantity * stock_value
+                total_rent += stock_rent * position_value
+                total_amount_wallet += position_value
 
-            results.append({
-                "wallet_name": wallet_name,
-                "wallet_total": totalAmountWallet,
-                "wallet_rent": wallet_rent,
-                "itens": itens
+                items_response.append({
+                    "ticker": ticker,
+                    "quantity": quantity,
+                    "stock_img": self.get_image(ticker)
+                })
+
+            wallet_rent = total_rent / total_amount_wallet
+
+            wallets_response["wallets"].append({
+                "name": wallet_name,
+                "total": total_amount_wallet,
+                "rentability": wallet_rent,
+                "items": items_response
             })
 
-        return results
+        return wallets_response
+
     
     def findStock(self, stockName: str):
         try:

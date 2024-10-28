@@ -98,7 +98,7 @@ class StockService:
         ibov_points = self.cotation('^BVSP')
         ibov_rent = self.calculate_rentability(self.get_previous_year('^BVSP'))
         for i in self.stock_page_data:
-            additional_data_obj.items.append(StockData(nome=i, rentabilidade=self.calculate_rentability(self.get_previous_year(i)), imagem= self.get_image(i), max= self.get_stock_info(i, "High"), minimo= self.get_stock_info(i, "Low"), volume= self.get_stock_info(i, "Volume"), abertura= self.get_stock_info(i, "Open"), fechamento= self.get_stock_info(i, "Close"), preco_atual= self.cotation(i)))
+            additional_data_obj.items.append(StockData(nome=i, rentabilidade=self.calculate_rentability(self.get_yesterday(i)), imagem= self.get_image(i), max= self.get_stock_info(i, "High"), minimo= self.get_stock_info(i, "Low"), volume= self.get_stock_info(i, "Volume"), abertura= self.get_stock_info(i, "Open"), fechamento= self.get_stock_info(i, "Close"), preco_atual= self.cotation(i)))
         stock_page = StockPage(
             ibov_points= ibov_points,
             ibov_rent= ibov_rent,
@@ -184,3 +184,45 @@ class StockService:
             })
 
         return results
+    
+    def walletInfo(self, wallets_request: WalletsRequest):
+        results = []
+
+        for wallet in wallets_request.wallets:
+            wallet_name = wallet.name
+            totalRent = 0
+            totalAmountWallet = 0
+            itens = []
+
+            for stock in wallet.items:
+                ticker = stock.ticker
+                quantity = stock.quantity
+
+                stockValue = self.cotation(ticker)
+                stockRent = self.calculate_rentability(self.get_previous_year(ticker))
+                positionValue = quantity * stockValue
+                totalRent+=stockRent * positionValue
+                totalAmountWallet+=positionValue
+                itens.append({
+                "stock_name": ticker,
+                "stock_img": self.get_image(ticker)
+            })
+            wallet_rent = totalRent/totalAmountWallet
+          
+
+            results.append({
+                "wallet_name": wallet_name,
+                "wallet_total": totalAmountWallet,
+                "wallet_rent": wallet_rent,
+                "itens": itens
+            })
+
+        return results
+    
+    def findStock(self, stockName: str):
+        # try:
+            # result = StockData(nome=stockName, rentabilidade=self.calculate_rentability(self.get_yesterday(stockName)), imagem= self.get_image(stockName), max= self.get_stock_info(stockName, "High"), minimo= self.get_stock_info(stockName, "Low"), volume= self.get_stock_info(stockName, "Volume"), abertura= self.get_stock_info(stockName, "Open"), fechamento= self.get_stock_info(stockName, "Close"), preco_atual= self.cotation(stockName))
+            result = self.get_yesterday(stockName)
+            return result
+        # except Exception as e:
+        #     return f"Ação '{stockName}' não encontrada."

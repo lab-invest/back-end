@@ -45,3 +45,11 @@ class StockController:
     @classmethod
     def walletRent(cls, walletList: List[dict]):
         return cls.__service.getWalletRent(walletList)
+    
+    @classmethod
+    def walletInfo(cls, walletList: WalletsRequest):
+        return cls.__service.walletInfo(walletList)
+    
+    @classmethod
+    def findStock(cls, stockName: str):
+        return cls.__service.findStock(stockName)

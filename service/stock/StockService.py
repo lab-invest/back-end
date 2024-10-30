@@ -32,7 +32,7 @@ class StockService:
     
     def stock_prevision(self, ticker:str):
         previsioned_value = self.get_prevision(self.get_previous_year(ticker))
-        historical_data_json = self.get_previous_year(ticker)['Close'].reset_index().to_json(orient='records')
+        historical_data_json = self.get_previous_yeare_by_month(ticker)['Close']
         rentability = self.calculate_rentability(self.get_previous_year(ticker))
         prevision: PrevisionResponse = {
             "previsioned_value": previsioned_value,

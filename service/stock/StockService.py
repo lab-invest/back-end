@@ -67,6 +67,16 @@ class StockService:
         data = yf.download(ticker, start=date_str, interval="1m")
         return data
     
+    def get_previous_yeare_by_month(self, ticker: str):
+        date = datetime.now() - timedelta(365)
+        
+        while date.weekday() >= 5: 
+            date -= timedelta(1)
+        
+        date_str = date.strftime("%Y-%m-%d")
+        data = yf.download(ticker, start=date_str, interval="1mo")
+        return data
+    
     def calculate_rentability(self, data):
         first_data = data.head(1)['Close'].iloc[-1]
         last_data = data.tail(1)['Close'].iloc[-1]
@@ -78,7 +88,7 @@ class StockService:
 
 
     def stock_marketplace(self, ticker: str):
-        historical_data_json = self.get_yesterday(ticker)['Close']
+        historical_data_json = self.get_previous_yeare_by_month(ticker)['Close']
         stock_cotation = self.cotation(ticker)
         rentability = self.calculate_rentability(self.get_previous_year(ticker))
         img = self.get_image(ticker)

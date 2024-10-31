@@ -215,11 +215,13 @@ class StockService:
             for stock in wallet.items:
                 ticker = stock.ticker
                 quantity = stock.quantity
+                avg_price = stock.average_price
 
-                stock_value = self.cotation(ticker) 
-                stock_rent = self.calculate_rentability_by_avg_price(stock.average_price, self.cotation(ticker))
+                stock_value = self.cotation(ticker)
+                stock_rent = self.calculate_rentability_by_avg_price(avg_price, stock_value)
                 position_value = quantity * stock_value
-                total_rent += stock_rent * position_value
+                total_rent += (stock_rent / 100) * position_value
+
                 total_amount_wallet += position_value
 
                 items_response.append({
@@ -228,7 +230,7 @@ class StockService:
                     "stock_img": self.get_image(ticker)
                 })
 
-            wallet_rent = total_rent / total_amount_wallet
+            wallet_rent = (total_rent / total_amount_wallet) * 100
 
             wallets_response["wallets"].append({
                 "name": wallet_name,

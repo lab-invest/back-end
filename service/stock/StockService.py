@@ -217,7 +217,7 @@ class StockService:
                 quantity = stock.quantity
 
                 stock_value = self.cotation(ticker) 
-                stock_rent = self.calculate_rentability(self.get_previous_year(ticker))
+                stock_rent = self.calculate_rentability_by_avg_price(stock.average_price, self.cotation(ticker))
                 position_value = quantity * stock_value
                 total_rent += stock_rent * position_value
                 total_amount_wallet += position_value

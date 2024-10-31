@@ -153,12 +153,15 @@ class StockService:
             totalAmountWallet+=positionValue
         return totalAmountWallet
     
+    def calculate_rentability_by_avg_price(self, avgPrice: float, price: float):
+        return ((price - avgPrice) / avgPrice) * 100
+    
     def getWalletRent(self, stockList: List[dict]):
         totalRent = 0
         totalAmountWallet = 0
         for i in stockList:
             stockValue = self.cotation(i['ticker'])
-            stockRent = self.calculate_rentability(self.get_previous_year(i['ticker']))
+            stockRent = self.calculate_rentability_by_avg_price(i['average_price'], self.cotation(i["ticker"]))
             positionValue = i['quantity'] * stockValue
             totalRent+=stockRent * positionValue
             totalAmountWallet+=positionValue

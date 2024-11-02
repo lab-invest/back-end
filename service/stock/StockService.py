@@ -165,7 +165,11 @@ class StockService:
             positionValue = i['quantity'] * stockValue
             totalRent+=stockRent * positionValue
             totalAmountWallet+=positionValue
-        result = totalRent/totalAmountWallet
+
+        if totalAmountWallet == 0 or positionValue == 0: 
+            result = 0
+        else:
+            result = totalRent/totalAmountWallet
         return result
         
     
@@ -230,7 +234,10 @@ class StockService:
                     "stock_img": self.get_image(ticker)
                 })
 
-            wallet_rent = (total_rent / total_amount_wallet) * 100
+            if total_rent == 0 or total_amount_wallet == 0:
+                wallet_rent = 0
+            else:
+                wallet_rent = (total_rent / total_amount_wallet) * 100
 
             wallets_response["wallets"].append({
                 "name": wallet_name,

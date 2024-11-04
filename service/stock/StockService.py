@@ -91,6 +91,7 @@ class StockService:
         historical_data_json = self.get_previous_yeare_by_month(ticker)['Close']
         stock_cotation = self.cotation(ticker)
         rentability = self.calculate_rentability(self.get_previous_year(ticker))
+        company_name = yf.Ticker(ticker).info.get("longName")
         img = self.get_image(ticker)
         aditional_data = {
             "Open": self.get_stock_info(ticker, "Open"),
@@ -101,6 +102,7 @@ class StockService:
         }
         marketplace_data: StockMarketplace = {
             "aditional_data": aditional_data,
+            "company_name": company_name,
             "rentability": rentability,
             "historical_data": historical_data_json,
             "stock_cotation": stock_cotation,

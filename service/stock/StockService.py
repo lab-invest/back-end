@@ -50,12 +50,12 @@ class StockService:
     def get_previous_year(self, ticker: str):
         date = (datetime.now() - relativedelta(years=1)).strftime("%Y-%m-%d")
         data = yf.download(ticker, start=date)
-        return data
+        return data.sort_index()
 
     def get_actual_day(self, ticker: str):
         date = datetime.now().strftime("%Y-%m-%d")
         data = yf.download(ticker, start=date, interval= "1m")
-        return data
+        return data.sort_index()
     
     def get_yesterday(self, ticker: str):
         date = datetime.now() - timedelta(1)
@@ -65,7 +65,7 @@ class StockService:
         
         date_str = date.strftime("%Y-%m-%d")
         data = yf.download(ticker, start=date_str, interval="1m")
-        return data
+        return data.sort_index()
     
     def get_previous_yeare_by_month(self, ticker: str):
         date = datetime.now() - timedelta(365)
@@ -75,7 +75,7 @@ class StockService:
         
         date_str = date.strftime("%Y-%m-%d")
         data = yf.download(ticker, start=date_str, interval="1mo")
-        return data
+        return data.sort_index()
     
     def calculate_rentability(self, data):
         first_data = data.head(1)['Close'].iloc[-1]

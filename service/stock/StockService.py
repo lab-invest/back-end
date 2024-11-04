@@ -161,7 +161,7 @@ class StockService:
         totalAmountWallet = 0
         for i in stockList:
             stockValue = self.cotation(i['ticker'])
-            stockRent = self.calculate_rentability_by_avg_price(i['averagePrice'], self.cotation(i["ticker"]))
+            stockRent = self.calculate_rentability_by_avg_price(i['average_price'], self.cotation(i["ticker"]))
             positionValue = i['quantity'] * stockValue
             totalRent+=stockRent * positionValue
             totalAmountWallet+=positionValue
@@ -219,7 +219,7 @@ class StockService:
             for stock in wallet.items:
                 ticker = stock.ticker
                 quantity = stock.quantity
-                avg_price = stock.averagePrice
+                avg_price = stock.average_price
 
                 stock_value = self.cotation(ticker)
                 stock_rent = self.calculate_rentability_by_avg_price(avg_price, stock_value)

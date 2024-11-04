@@ -7,7 +7,7 @@ from pydantic import BaseModel
 class WalletItem(BaseModel):
     ticker: str
     quantity: int
-    averagePrice: float
+    average_price: float
 
 class WalletList(BaseModel):
     name: str

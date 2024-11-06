@@ -1,18 +1,17 @@
 InvestLab API
 
-InvestLab é uma API desenvolvida com FastAPI para fornecer cotações de ações e dados históricos, consultando a API do Yahoo Finance. Este serviço é ideal para obter dados de mercado em tempo real e históricos para análises financeiras e estudos de investimentos.
-Índice
+InvestLab um projeto que tem um back-end desenvolvido em 2 partes. Essa api com o FastAPI serve para fornecer cotações de ações e dados históricos, consultando a API do Yahoo Finance. Este serviço é ideal para obter dados de mercado em tempo real e históricos para análises financeiras e estudos de investimentos. Índice
 
-    Instalação
-    Configuração
-    Uso
-    Endpoints
-    Exemplo de Requisição
-    Licença
+Instalação
+Configuração
+Uso
+Endpoints
+Exemplo de Requisição
+Licença
 
 Instalação
 
-    Clone este repositório:
+Clone este repositório:
 
 git clone https://github.com/usuario/investlab-api.git
 
@@ -22,12 +21,12 @@ cd investlab-api
 
 Instale as dependências:
 
-    pip install -r requirements.txt
+pip install -r requirements.txt
 
 Configuração
 
-    Configure a variável de ambiente PORT, se necessário, para definir a porta em que a API será executada. A porta padrão é 8000.
-    CORS: A API permite origens locais padrão, como localhost:8000. Para ajustar essas configurações, edite a lista origins no código da API.
+Configure a variável de ambiente PORT, se necessário, para definir a porta em que a API será executada. A porta padrão é 8000.
+CORS: A API permite origens locais padrão, como localhost:8000. Para ajustar essas configurações, edite a lista origins no código da API.
 
 Uso
 
@@ -35,29 +34,23 @@ Execute a API usando o seguinte comando:
 
 python -m uvicorn main:app --reload
 
-A API estará acessível em: http://localhost:8000.
-Rotas de Exemplo
+A API estará acessível em: http://localhost:8000. Rotas de Exemplo
 
 Abaixo estão os endpoints principais oferecidos pela InvestLab API:
 
-    GET /stock?ticker={ticker}: Retorna a cotação atual do ativo.
-    GET /wallet/rentability/: Retorna a rentabilidade de uma carteira
+GET /stock?ticker={ticker}: Retorna a cotação atual do ativo.
+GET /wallet/rentability/: Retorna a rentabilidade de uma carteira
 
-Substitua {ticker} pelo símbolo do ativo (ex.: VALE3.SA, TAEE3.SA).
-Endpoints
-GET /stock?ticker={ticker}
+Substitua {ticker} pelo símbolo do ativo (ex.: VALE3.SA, TAEE3.SA). Endpoints GET /stock?ticker={ticker}
 
 Retorna a cotação atual do ativo.
 
-    Parâmetro: ticker - símbolo do ativo (ex.: PETR4.SA para Petrobrás).
-    Resposta: Retorna a cotação atual
+Parâmetro: ticker - símbolo do ativo (ex.: PETR4.SA para Petrobrás).
+Resposta: Retorna a cotação atual
 
 Exemplo de Resposta
 
-{
- 62.119998931884766
-}
-
+{ 62.119998931884766 }
 
 Exemplo de Requisição
 

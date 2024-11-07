@@ -32,7 +32,7 @@ class StockService:
     
     def stock_prevision(self, ticker:str):
         previsioned_value = self.get_prevision(self.get_previous_year(ticker))
-        historical_data_json = self.get_previous_yeare_by_month(ticker)['Close']
+        historical_data_json = self.get_previous_year_by_month(ticker)['Close']
         rentability = self.calculate_rentability(self.get_previous_year(ticker))
         prevision: PrevisionResponse = {
             "previsioned_value": previsioned_value,
@@ -67,7 +67,7 @@ class StockService:
         data = yf.download(ticker, start=date_str, interval="1m")
         return data.sort_index()
     
-    def get_previous_yeare_by_month(self, ticker: str):
+    def get_previous_year_by_month(self, ticker: str):
         date = datetime.now() - timedelta(365)
         
         while date.weekday() >= 5: 
@@ -88,7 +88,7 @@ class StockService:
 
 
     def stock_marketplace(self, ticker: str):
-        historical_data_json = self.get_previous_yeare_by_month(ticker)['Close']
+        historical_data_json = self.get_previous_year_by_month(ticker)['Close']
         stock_cotation = self.cotation(ticker)
         rentability = self.calculate_rentability(self.get_previous_year(ticker))
         company_name = yf.Ticker(ticker).info.get("longName")
@@ -186,7 +186,7 @@ class StockService:
                 ticker = stock.ticker
                 quantity = stock.quantity
 
-                historical_data = self.get_previous_year(ticker)
+                historical_data = self.get_previous_year_by_month(ticker)
 
                 for date, row in historical_data.iterrows():
                     close_price = row['Close']

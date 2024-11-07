@@ -1,6 +1,6 @@
 InvestLab API
 
-InvestLab é uma API desenvolvida com FastAPI para fornecer cotações de ações e dados históricos, consultando a API do Yahoo Finance. Este serviço é ideal para obter dados de mercado em tempo real e históricos para análises financeiras e estudos de investimentos.
+InvestLab um projeto que tem um back-end desenvolvido em 2 partes. Essa api com o FastAPI serve para fornecer cotações de ações e dados históricos, consultando a API do Yahoo Finance. Este serviço é ideal para obter dados de mercado em tempo real e históricos para análises financeiras e estudos de investimentos.
 Índice
 
     Instalação

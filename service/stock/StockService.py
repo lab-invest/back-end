@@ -186,7 +186,7 @@ class StockService:
                 ticker = stock.ticker
                 quantity = stock.quantity
 
-                historical_data = self.get_previous_year(ticker)
+                historical_data = self.get_previous_yeare_by_month(ticker)
 
                 for date, row in historical_data.iterrows():
                     close_price = row['Close']

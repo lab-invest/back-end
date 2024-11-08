@@ -127,7 +127,7 @@ class StockService:
         result = StockComparison(stocks= [])
 
         for i in stockList:
-            stock = self.get_previous_year(i)['Close'].to_dict()
+            stock = self.get_previous_year_by_month(i)['Close'].to_dict()
             result.stocks.append({i: stock})
         return result
     

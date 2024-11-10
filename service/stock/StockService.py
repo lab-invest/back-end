@@ -142,7 +142,7 @@ class StockService:
         result = []
         for i in stockList:
             stockValue = self.cotation(i['ticker'])
-            stockRent = self.calculate_rentability(self.get_previous_year(i['ticker']))
+            stockRent = self.calculate_rentability_by_avg_price(i['average_price'], stockValue)
             stockImg = self.get_image(i['ticker'])
             result.append({i['ticker']: [stockValue, stockRent, stockImg]})
         return result
@@ -222,6 +222,8 @@ class StockService:
                 ticker = stock.ticker
                 quantity = stock.quantity
                 avg_price = stock.average_price
+                value = self.cotation(ticker)
+                rent = self.calculate_rentability_by_avg_price(avg_price, value)
 
                 stock_value = self.cotation(ticker)
                 stock_rent = self.calculate_rentability_by_avg_price(avg_price, stock_value)
@@ -232,6 +234,8 @@ class StockService:
 
                 items_response.append({
                     "ticker": ticker,
+                    "value": value,
+                    "rentability": rent,
                     "quantity": quantity,
                     "stock_img": self.get_image(ticker)
                 })

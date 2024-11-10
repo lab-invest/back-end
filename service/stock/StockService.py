@@ -17,7 +17,8 @@ class StockService:
 
     def __init__(self):
         self.__user_repo = StockRepo()
-        self.stock_page_data = ["VALE3.SA", "TRPL4.SA", "TAEE3.SA", "NEOE3.SA", "PETR4.SA", "TOTS3.SA", "GOAU4.SA", "KLBN3.SA"]
+        self.stock_page_data = ["VALE3.SA", "TRPL4.SA", "TAEE3.SA", "NEOE3.SA", "PETR4.SA", "TOTS3.SA", "GOAU4.SA", "KLBN3.SA", "BBDC4.SA", "ITUB4.SA", "BBAS3.SA", "CSNA3.SA", "GGBR4.SA", "WEGE3.SA", "RENT3.SA", "RADL3.SA", "ABEV3.SA", "JBSS3.SA"]
+
     
     def cotation(self, ticker:str):
         price = get_live_price(ticker)

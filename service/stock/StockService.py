@@ -180,36 +180,40 @@ class StockService:
         results = []
 
         for wallet in wallets_request.wallets:
+            wallet_value_history = {}
             wallet_name = wallet.name
-            monthly_returns = {}
 
-            end_date = datetime.now().date()
-            start_date = end_date - timedelta(days=365)
+            # Para cada ação na carteira, calculamos o histórico de valor mensal
+            for stock in wallet.items:
+                ticker = stock.ticker
+                quantity = stock.quantity
 
-            for item in wallet.items:
-                ticker = item.ticker
-                quantity = item.quantity
-                average_price = item.average_price
+                # Obtém dados históricos de fechamento mensal para a ação
+                historical_data = self.get_previous_year_by_month(ticker)
 
-                stock_data = yf.download(ticker, start=start_date, end=end_date, interval='1mo')['Adj Close']
+                for date, row in historical_data.iterrows():
+                    close_price = row['Close']
+                    position_value = close_price * quantity
 
-                previous_month_value = quantity * average_price
-                for date, price in stock_data.items():
-                    current_value = quantity * price
-                    monthly_return = ((current_value - previous_month_value) / previous_month_value) * 100
-                    previous_month_value = current_value
+                    # Acumula o valor da posição para a data especificada
+                    if date not in wallet_value_history:
+                        wallet_value_history[date] = 0
+                    wallet_value_history[date] += position_value
 
-                    month_str = date.strftime('%Y-%m')
-                    if month_str not in monthly_returns:
-                        monthly_returns[month_str] = 0
-                    monthly_returns[month_str] += monthly_return
+            # Formata o histórico da carteira como uma lista de dicionários com `date` e `value`
+            wallet_history_list = [
+                {"date": date.strftime("%Y-%m-%d"), "value": value}
+                for date, value in sorted(wallet_value_history.items())
+            ]
 
+            # Adiciona o resultado da carteira ao resultado final
             results.append({
                 "wallet_name": wallet_name,
-                "monthly_returns": monthly_returns
+                "history": wallet_history_list
             })
 
         return results
+
     
     def walletInfo(self, wallets_request: WalletsRequest):
         wallets_response = {"wallets": []} 

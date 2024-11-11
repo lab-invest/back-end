@@ -183,30 +183,43 @@ class StockService:
             wallet_value_history = {}
             wallet_name = wallet.name
 
-            # Para cada ação na carteira, calculamos o histórico de valor mensal
             for stock in wallet.items:
                 ticker = stock.ticker
                 quantity = stock.quantity
 
-                # Obtém dados históricos de fechamento mensal para a ação
+                # Obtém os dados históricos mensais para o ticker
                 historical_data = self.get_previous_year_by_month(ticker)
 
+                # Calcula o valor da posição para cada mês
                 for date, row in historical_data.iterrows():
                     close_price = row['Close']
                     position_value = close_price * quantity
 
-                    # Acumula o valor da posição para a data especificada
                     if date not in wallet_value_history:
                         wallet_value_history[date] = 0
                     wallet_value_history[date] += position_value
 
-            # Formata o histórico da carteira como uma lista de dicionários com `date` e `value`
-            wallet_history_list = [
-                {"date": date.strftime("%Y-%m-%d"), "value": value}
-                for date, value in sorted(wallet_value_history.items())
-            ]
+            # Ordena os dados de histórico de valores por data
+            sorted_history = sorted(wallet_value_history.items())
+            wallet_history_list = []
 
-            # Adiciona o resultado da carteira ao resultado final
+            # Calcula a rentabilidade mensal em relação ao mês anterior
+            for i in range(1, len(sorted_history)):
+                current_date, current_value = sorted_history[i]
+                previous_date, previous_value = sorted_history[i - 1]
+
+                # Calcula a rentabilidade como variação percentual em relação ao mês anterior
+                if previous_value != 0:
+                    monthly_rentability = ((current_value - previous_value) / previous_value) * 100
+                else:
+                    monthly_rentability = 0
+
+                wallet_history_list.append({
+                    "date": current_date.strftime("%Y-%m-%d"),
+                    "value": monthly_rentability,
+                })
+
+            # Adiciona o histórico da carteira ao resultado
             results.append({
                 "wallet_name": wallet_name,
                 "history": wallet_history_list

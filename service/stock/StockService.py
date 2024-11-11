@@ -12,7 +12,7 @@ from domain.entities.StockMarketplace import StockMarketplace
 from domain.entities.StockPage import StockPage, StockData, AdditionalData
 from typing import Dict, List
 
-
+##
 class StockService:
 
     def __init__(self):

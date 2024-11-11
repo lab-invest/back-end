@@ -236,8 +236,6 @@ class StockService:
                 items_response.append({
                     "ticker": ticker,
                     "value": value,
-                    "rentability": rent,
-                    "quantity": quantity,
                     "stock_img": self.get_image(ticker)
                 })
 

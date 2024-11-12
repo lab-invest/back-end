@@ -17,7 +17,7 @@ class StockService:
 
     def __init__(self):
         self.__user_repo = StockRepo()
-        self.stock_page_data = ["VALE3.SA", "PETR4.SA", "PETR3.SA", "ITUB4.SA", "BBDC4.SA", "BBAS3.SA", "ABEV3.SA", "WEGE3.SA", "RENT3.SA", "JBSS3.SA", "BRFS3.SA", "GGBR4.SA", "CSNA3.SA", "ELET3.SA", "ELET6.SA", "SUZB3.SA", "TOTS3.SA", "RADL3.SA", "TAEE11.SA", "LREN3.SA", "MRFG3.SA", "RAIL3.SA", "UGPA3.SA", "CCRO3.SA", "WIZC3.SA", "BRKM5.SA", "CYRE3.SA", "USIM5.SA", "KLBN3.SA", "SLCE3.SA", "MULT3.SA", "B3SA3.SA", "AZUL4.SA", "GOLL4.SA", "HAPV3.SA", "YDUQ3.SA", "QUAL3.SA", "EQTL3.SA", "NEOE3.SA", "CVCB3.SA", "PRIO3.SA", "MRVE3.SA", "GOAU4.SA", "TRPL4.SA"]
+        self.stock_page_data = ["VALE3.SA", "PETR4.SA", "PETR3.SA", "ITUB4.SA", "BBDC4.SA", "BBAS3.SA", "ABEV3.SA", "WEGE3.SA", "RENT3.SA", "JBSS3.SA", "BRFS3.SA", "GGBR4.SA", "CSNA3.SA", "ELET3.SA", "ELET6.SA", "SUZB3.SA", "TOTS3.SA", "RADL3.SA", "TAEE11.SA", "LREN3.SA", "MRFG3.SA", "RAIL3.SA", "B3SA3.SA"]
     def cotation(self, ticker:str):
         price = get_live_price(ticker)
         return price
